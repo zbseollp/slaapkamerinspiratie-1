@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import pageHtml from '../data/pages/verlichting.html?raw';
+
+const title = "Verlichting";
+const description = "Verlichting";
+---
+
+<PageLayout title={title} description={description}>
+  <article class="page-content" set:html={pageHtml} />
+</PageLayout>

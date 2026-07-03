@@ -1,0 +1,590 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+
+const pages = [
+  {
+    "label": "Home",
+    "href": "/"
+  },
+  {
+    "label": "Bedden",
+    "href": "/bedden/"
+  },
+  {
+    "label": "Dekbed",
+    "href": "/dekbed/"
+  },
+  {
+    "label": "Verlichting",
+    "href": "/verlichting/"
+  },
+  {
+    "label": "Interieur",
+    "href": "/interieur/"
+  },
+  {
+    "label": "Contact",
+    "href": "/contact/"
+  },
+  {
+    "label": "Kledingkasten",
+    "href": "/kledingkasten/"
+  }
+];
+const posts = [
+  {
+    "label": "Hoog laag bedden: comfort en functionaliteit voor zorg en thuisgebruik",
+    "href": "/hoog-laag-bedden-comfort-en-functionaliteit-voor-zorg-en-thuisgebruik/"
+  },
+  {
+    "label": "Waarom een matras op maat de sleutel kan zijn tot een betere nachtrust",
+    "href": "/waarom-een-matras-op-maat-de-sleutel-kan-zijn-tot-een-betere-nachtrust/"
+  },
+  {
+    "label": "Risico's van volgers kopen: Feiten en fictie",
+    "href": "/risicos-van-volgers-kopen-feiten-en-fictie/"
+  },
+  {
+    "label": "Het geheim van een perfecte nachtrust",
+    "href": "/het-geheim-van-een-perfecte-nachtrust/"
+  },
+  {
+    "label": "Likes als teken van betrouwbaarheid op Instagram",
+    "href": "/likes-als-teken-van-betrouwbaarheid-op-instagram/"
+  },
+  {
+    "label": "Beste producten voor je slaapkamer: tips voor een ideale inrichting",
+    "href": "/beste-producten-voor-je-slaapkamer/"
+  },
+  {
+    "label": "Creëer een slaapkamer vol slaap en ontspanning",
+    "href": "/creeer-een-slaapkamer-vol-slaap-en-ontspanning/"
+  },
+  {
+    "label": "De beste slaapkamer artikelen voor een rustige en stijlvolle inrichting",
+    "href": "/de-beste-slaapkamer-artikelen-voor-een-rustige-en-stijlvolle-inrichting/"
+  },
+  {
+    "label": "De beste slaapkamer producten voor een perfecte nachtrust",
+    "href": "/de-beste-slaapkamer-producten-voor-een-perfecte-nachtrust/"
+  },
+  {
+    "label": "Slaapkamer met ingebouwde luchtzuivering: gezond en fris slapen",
+    "href": "/slaapkamer-met-ingebouwde-luchtzuivering/"
+  },
+  {
+    "label": "Tech-free slaapkamer: rust en ontspanning zonder schermen",
+    "href": "/tech-free-slaapkamer/"
+  },
+  {
+    "label": "Slaapkamers zonder bed: minimalistisch slapen met alternatieve slaapopties",
+    "href": "/slaapkamers-zonder-bed/"
+  },
+  {
+    "label": "Hybride slaapkamer ideeën: multifunctioneel en slim ingericht",
+    "href": "/hybride-slaapkamer-ideeen/"
+  },
+  {
+    "label": "Pod-bedroom maken: een knusse en futuristische slaapruimte",
+    "href": "/pod-bedroom-maken/"
+  },
+  {
+    "label": "Rust in je hoofd begint bij rust in je kamer",
+    "href": "/rust-in-je-hoofd-begint-bij-rust-in-je-kamer/"
+  },
+  {
+    "label": "Het vermogen van Chris Woerts: hoe commercieel inzicht loont",
+    "href": "/chris-woerts-vermogen/"
+  },
+  {
+    "label": "Arno Kantelberg en zijn partner: liefde buiten de spotlights",
+    "href": "/arno-kantelberg-partner/"
+  },
+  {
+    "label": "Esther Ouwehand en haar partner: een teruggetrokken liefdesleven",
+    "href": "/esther-ouwehand-partner/"
+  },
+  {
+    "label": "Heeft Wentworth Miller een partner?",
+    "href": "/wentworth-miller-partner/"
+  },
+  {
+    "label": "Meike de Jong en haar partner: een blik op haar privéleven",
+    "href": "/meike-de-jong-partner/"
+  },
+  {
+    "label": "Sari van Veenendaal en haar partner: liefde buiten de lijnen",
+    "href": "/sari-van-veenendaal-partner/"
+  },
+  {
+    "label": "Rikki Borgelt en haar partner: liefde tussen Amsterdam en Italië",
+    "href": "/rikki-borgelt-partner/"
+  },
+  {
+    "label": "Max Terpstra en zijn partner: creativiteit en gelijkwaardigheid in balans",
+    "href": "/max-terpstra-partner/"
+  },
+  {
+    "label": "Angela de Jong en haar partner: liefde tussen de deadlines",
+    "href": "/angela-de-jongh-partner/"
+  },
+  {
+    "label": "Lieke Klaver en haar familie: de mensen achter de sprintster",
+    "href": "/lieke-klaver-familie/"
+  },
+  {
+    "label": "Lize van Olden en haar partner: liefde achter de schermen",
+    "href": "/lize-van-olden-partner/"
+  },
+  {
+    "label": "Farenas Kesbeke: partner van de augurkenkoning en stille kracht achter de schermen",
+    "href": "/farenas-kesbeke-leeftijd/"
+  },
+  {
+    "label": "Yvonne Coldeweijer en haar vriend Max Vieleers: liefde, tegenslag en herstel",
+    "href": "/yvonne-coldeweijer-vriend/"
+  },
+  {
+    "label": "Kiki Wennink: leeftijd, carrière en haar relatie met Mattie Valk",
+    "href": "/kiki-wennink-leeftijd/"
+  },
+  {
+    "label": "Judith Uitermark: partner, kinderen en haar gezinsleven",
+    "href": "/judith-uitermark-partner-kinderen-en-gezinsleven/"
+  },
+  {
+    "label": "Juultje Tieleman nieuwe vriend: een blik op haar liefdesleven",
+    "href": "/juultje-tieleman-nieuwe-vriend-relatie/"
+  },
+  {
+    "label": "Wie is Koen Schetters: de vriend van Jessie Maya?",
+    "href": "/wie-is-koen-schetters-de-vriend-van-jessie-maya/"
+  },
+  {
+    "label": "Hoe oud is Henriëtte (Jet) de Nijs eigenlijk?",
+    "href": "/wie-is-henriette-de-nijs-relatie-rob-de-nijs/"
+  },
+  {
+    "label": "Alles over Lilian Marijnissen: leeftijd, partner en gezin en politieke carrière",
+    "href": "/alles-over-lilian-marijnissen-leeftijd-partner-gezin-politieke-carriere/"
+  },
+  {
+    "label": "Jill Helena: leeftijd, muzikale reis en haar juridische strijd met Ali B",
+    "href": "/jill-helena-leeftijd-muzikale-reis-juridische-strijd-ali-b/"
+  },
+  {
+    "label": "Lisa Loeb: leeftijd, partner en gezin van cabaretier en presentator",
+    "href": "/lisa-loeb-leeftijd-partner-gezin/"
+  },
+  {
+    "label": "Mark Gillis: Zijn vriendin, leeftijd, gezondheid en meer over de zoon van",
+    "href": "/mark-gillis-vriendin-leeftijd-ziekenhuisopname/"
+  },
+  {
+    "label": "Wie is de vriend van Megan Desaever?",
+    "href": "/wie-is-de-vriend-van-megan-desaever/"
+  },
+  {
+    "label": "Heeft Memphis Depay een vriendin?",
+    "href": "/heeft-memphis-depay-een-vriendin/"
+  },
+  {
+    "label": "Michelle Bibi: Leeftijd, gezin en carrière van Roy Donders’ vriendin",
+    "href": "/michelle-bibi-leeftijd-gezin-carriere/"
+  },
+  {
+    "label": "Iris Enthoven: over haar vriend, relatie en moederschap",
+    "href": "/iris-enthoven-vriend/"
+  },
+  {
+    "label": "De opleiding en loopbaan van Marjolein Faber uitgelegd",
+    "href": "/marjolein-faber-opleiding/"
+  },
+  {
+    "label": "Viktor Brand en zijn partner André Koelewijn: een liefdevolle relatie",
+    "href": "/viktor-brand-partner/"
+  },
+  {
+    "label": "Kefah Allush: partner, gezin, geloof en persoonlijke inzichten",
+    "href": "/kefah-allush-partner-gezin-geloof/"
+  },
+  {
+    "label": "Seizoensdecoratie stijlvol in huis toepassen",
+    "href": "/seizoensdecoratie-stijlvol-in-huis-toepassen/"
+  },
+  {
+    "label": "Henri Bontenbal: zijn partner Hanneke en het gezinsleven van de CDA-leider",
+    "href": "/henri-bontenbal-partner/"
+  },
+  {
+    "label": "Charlotte Labee: haar man Jan Lok en het gezinsleven",
+    "href": "/charlotte-labee-partner/"
+  },
+  {
+    "label": "Brigitte Heitzer: haar partner Jordi de Koning en gezin",
+    "href": "/brigitte-heitzer-partner/"
+  },
+  {
+    "label": "Nicolien van Vroonhoven: haar man en politiek geluk",
+    "href": "/nicolien-van-vroonhoven-partner/"
+  },
+  {
+    "label": "Ron Fresen: zijn partner Anneke en gezin",
+    "href": "/ron-fresen-partner/"
+  },
+  {
+    "label": "Tim den Besten: zijn partner en de impact van zijn ziekte",
+    "href": "/tim-den-besten-partner/"
+  },
+  {
+    "label": "Waarom klik pvc goedkoop perfect is voor je verbouwing",
+    "href": "/waarom-klik-pvc-goedkoop-perfect-is-voor-je-verbouwing/"
+  },
+  {
+    "label": "Bouwvergunning en duurzaamheid: milieuvriendelijk bouwen met vergunning",
+    "href": "/bouwvergunning-en-duurzaamheid-milieuvriendelijk-bouwen-met-vergunning/"
+  },
+  {
+    "label": "Witte bouclé gordijnen: de nieuwste trend in raamdecoratie",
+    "href": "/witte-boucle-gordijnen-de-nieuwste-trend-in-raamdecoratie/"
+  },
+  {
+    "label": "Waarom een goede instagram promotiepagina jouw groei kan versnellen",
+    "href": "/waarom-een-goede-instagram-promotiepagina-jouw-groei-kan-versnellen/"
+  },
+  {
+    "label": "Verf op waterbasis vs. terpentinebasis: milieuvriendelijk kiezen",
+    "href": "/verf-op-waterbasis-vs-terpentinebasis-milieuvriendelijk-kiezen/"
+  },
+  {
+    "label": "Slaapkamer geurtjes: zo ruikt je slaapkamer weer lekker",
+    "href": "/slaapkamer-geurtjes-zo-ruikt-je-slaapkamer-weer-lekker/"
+  },
+  {
+    "label": "Groeien op LinkedIn met de juiste strategie en support",
+    "href": "/groeien-op-linkedin-met-de-juiste-strategie-en-support/"
+  },
+  {
+    "label": "Beter slapen begint bij je slaapkamerinrichting",
+    "href": "/beter-slapen-begint-bij-je-slaapkamerinrichting/"
+  },
+  {
+    "label": "Hoe je slaapkamer je slaapkwaliteit beïnvloedt",
+    "href": "/hoe-je-slaapkamer-je-slaapkwaliteit-beinvloedt/"
+  },
+  {
+    "label": "Dit is hoe je een comfortabel bed uitkiest",
+    "href": "/dit-is-hoe-je-een-comfortabel-bed-uitkiest/"
+  },
+  {
+    "label": "Voordelen van vloerverwarming in je slaapkamer",
+    "href": "/voordelen-van-vloerverwarming-in-je-slaapkamer/"
+  },
+  {
+    "label": "Ontdek de voordelen van een boxspring",
+    "href": "/ontdek-de-voordelen-van-een-boxspring/"
+  },
+  {
+    "label": "Vensterbank op maat voor een stijlvolle uitstraling in huis",
+    "href": "/vensterbank-op-maat-voor-een-stijlvolle-uitstraling-in-huis/"
+  },
+  {
+    "label": "Avondrituelen: Ontspannen met slaapkamercomfort en casinospellen na een lange dag",
+    "href": "/avondrituelen-ontspannen-met-slaapkamercomfort-en-casinospellen-na-een-lange-dag/"
+  },
+  {
+    "label": "Ontspannende kleuren en stoffen voor een thuisgaming-oase",
+    "href": "/ontspannende-kleuren-en-stoffen-voor-een-thuisgaming-oase/"
+  },
+  {
+    "label": "Zo bouw je de slaapkamer om tot homegym",
+    "href": "/zo-bouw-je-de-slaapkamer-om-tot-homegym/"
+  },
+  {
+    "label": "Zonnepanelen Reinigen? Rendement Waard, of Onzin?",
+    "href": "/zonnepanelen-reinigen/"
+  },
+  {
+    "label": "De beste opvouwbare smartphones om online casino’s te spelen",
+    "href": "/de-beste-opvouwbare-smartphones-om-online-casinos-te-spelen/"
+  },
+  {
+    "label": "De perfecte balans tussen comfort en design: zo creëer je jouw droomkamer met het Matt Sleeps matras 160x200",
+    "href": "/de-perfecte-balans-tussen-comfort-en-design-zo-creeer-je-jouw-droomkamer-met-het-matt-sleeps-matras-160x200/"
+  },
+  {
+    "label": "Hoe je een gezellige sfeer in huis kunt creëren",
+    "href": "/hoe-je-een-gezellige-sfeer-in-huis-kunt-creeren/"
+  },
+  {
+    "label": "Dakpannen vervangen: alles wat u moet weten",
+    "href": "/dakpannen-vervangen-alles-wat-u-moet-weten/"
+  },
+  {
+    "label": "Dakisolatie voor de winter: houd de warmte binnen en de kou buiten",
+    "href": "/dakisolatie-voor-de-winter-houd-de-warmte-binnen-en-de-kou-buiten/"
+  },
+  {
+    "label": "Besparen op het gebruik van je houtkachel of openhaard",
+    "href": "/besparen-op-het-gebruik-van-je-houtkachel-of-openhaard/"
+  },
+  {
+    "label": "Welke vloer kies je voor de slaapkamer?",
+    "href": "/welke-vloer-kies-je-voor-de-slaapkamer/"
+  },
+  {
+    "label": "Slimme opbergruimte: roldeur archiefkasten in huis",
+    "href": "/slimme-opbergruimte-roldeur-archiefkasten-in-huis/"
+  },
+  {
+    "label": "Je huis isoleren kan op verschillende manieren",
+    "href": "/je-huis-isoleren-kan-op-verschillende-manieren/"
+  },
+  {
+    "label": "De Zachte Kant van Slim Wonen: Comfortgerichte Technologie voor de Slaapkamer",
+    "href": "/de-zachte-kant-van-slim-wonen-comfortgerichte-technologie-voor-de-slaapkamer/"
+  },
+  {
+    "label": "Neotenic design interieur tips voor een vrolijke twist!",
+    "href": "/neotenic-design-interieur-tips-zacht-rond-en-speels-wonen/"
+  },
+  {
+    "label": "De kunst van textiel en materiaal in casino-interieurontwerp",
+    "href": "/de-kunst-van-textiel-en-materiaal-in-casino-interieurontwerp/"
+  },
+  {
+    "label": "Creëer rust en stijl in de slaapkamer met de juiste raambekleding",
+    "href": "/creeer-rust-en-stijl-in-de-slaapkamer-met-de-juiste-raambekleding/"
+  },
+  {
+    "label": "Denk aan deze dingen bij het inrichten van je slaapkamer",
+    "href": "/denk-aan-deze-dingen-bij-het-inrichten-van-je-slaapkamer/"
+  },
+  {
+    "label": "Van kil naar knus: de kracht van moderne wandafwerking voor elk interieur",
+    "href": "/van-kil-naar-knus-de-kracht-van-moderne-wandafwerking-voor-elk-interieur/"
+  },
+  {
+    "label": "Schimmel in de slaapkamer: vaak meer dan alleen een ventilatieprobleem",
+    "href": "/schimmel-in-de-slaapkamer-vaak-meer-dan-alleen-een-ventilatieprobleem/"
+  },
+  {
+    "label": "Bewust ondernemen in een veranderende wereld: zo maak je écht duurzame keuzes",
+    "href": "/bewust-ondernemen-in-een-veranderende-wereld-zo-maak-je-echt-duurzame-keuzes/"
+  },
+  {
+    "label": "Geef je slaapkamer karakter met hexagon foto’s",
+    "href": "/geef-je-slaapkamer-karakter-met-hexagon-fotos/"
+  },
+  {
+    "label": "5 tips om jouw slaapkamer sfeervoller te maken",
+    "href": "/5-tips-om-jouw-slaapkamer-sfeervoller-te-maken/"
+  },
+  {
+    "label": "Terrasverwarmers voor een comfortabel buitenleven",
+    "href": "/terrasverwarmers-voor-een-comfortabel-buitenleven/"
+  },
+  {
+    "label": "Hout, staal of composite. Wat past bij jouw tuin?",
+    "href": "/hout-staal-of-composite-wat-past-bij-jouw-tuin/"
+  },
+  {
+    "label": "Slimme opbergruimte als fundament voor een rustgevende slaapkamer",
+    "href": "/slimme-opbergruimte-als-fundament-voor-een-rustgevende-slaapkamer/"
+  },
+  {
+    "label": "Stoere slaapkamer met zwarte accenten: zo houd je het sfeervol",
+    "href": "/stoere-slaapkamer-met-zwarte-accenten-zo-houd-je-het-sfeervol/"
+  },
+  {
+    "label": "Hoe kies je de juiste ventilatie voor een rustige slaapkamer",
+    "href": "/hoe-kies-je-de-juiste-ventilatie-voor-een-rustige-slaapkamer/"
+  },
+  {
+    "label": "Zo creëer je een sfeervolle slaapkamer met de juiste vloer",
+    "href": "/zo-creeer-je-een-sfeervolle-slaapkamer-met-de-juiste-vloer/"
+  },
+  {
+    "label": "Veilige slaapkamer: sloten en tips",
+    "href": "/veilige-slaapkamer-sloten-en-tips/"
+  },
+  {
+    "label": "Waterleiding en badkamer in slaapkamer",
+    "href": "/waterleiding-en-badkamer-in-slaapkamer/"
+  },
+  {
+    "label": "Wat slimme technologie voor je slaapkamercomfort kan betekenen in de winter",
+    "href": "/wat-slimme-technologie-voor-je-slaapkamercomfort-kan-betekenen-in-de-winter/"
+  },
+  {
+    "label": "Leuke tips om comfortabel te slapen in de achtertuin",
+    "href": "/leuke-tips-om-comfortabel-te-slapen-in-de-achtertuin/"
+  },
+  {
+    "label": "Creatieve alternatieven op het standaard bed",
+    "href": "/creatieve-alternatieven-op-het-standaard-bed/"
+  },
+  {
+    "label": "Van ochtendlicht tot avondrust: zo voelt elke dag als een all-inclusive ervaring",
+    "href": "/van-ochtendlicht-tot-avondrust-zo-voelt-elke-dag-als-een-all-inclusive-ervaring/"
+  },
+  {
+    "label": "De Ultieme Luie Zondag: Ontbijt op Bed en Mobiel Online Casino Spelen",
+    "href": "/de-ultieme-luie-zondag-ontbijt-op-bed-en-mobiel-online-casino-spelen/"
+  },
+  {
+    "label": "Hoe de juiste verlichting bijdraagt aan rust en balans in de slaapkamer",
+    "href": "/hoe-de-juiste-verlichting-bijdraagt-aan-rust-en-balans-in-de-slaapkamer/"
+  },
+  {
+    "label": "Hoe hotels omgaan met onverwachte vertragingen en wijzigingen",
+    "href": "/onverwachte-vertragingen-en-wijzigingen/"
+  },
+  {
+    "label": "Zachte Spanning Voor Het Slapengaan: Leuke Manieren Om De Dag Rustig Af Te Sluiten",
+    "href": "/zachte-spanning-voor-het-slapengaan-leuke-manieren-om-de-dag-rustig-af-te-sluiten/"
+  },
+  {
+    "label": "Gezellige slaapkameractiviteiten om te ontspannen voor het slapengaan",
+    "href": "/gezellige-slaapkameractiviteiten-om-te-ontspannen-voor-het-slapengaan/"
+  },
+  {
+    "label": "Kunstplanten die net echt zijn als interieurtrend van 2026",
+    "href": "/kunstplanten-die-net-echt-zijn-als-interieurtrend-van-2026/"
+  },
+  {
+    "label": "Deurbeslag kiezen: een onderschatte kracht in uw woning",
+    "href": "/deurbeslag-kiezen-een-onderschatte-kracht-in-uw-woning/"
+  },
+  {
+    "label": "Slimme oplossingen voor orde en rust in de slaapkamer",
+    "href": "/slimme-oplossingen-voor-orde-en-rust-in-de-slaapkamer/"
+  },
+  {
+    "label": "Slimme oplossingen voor orde en rust in de slaapkamer",
+    "href": "/slimme-oplossingen-voor-orde-en-rust-in-de-slaapkamer-2/"
+  },
+  {
+    "label": "Hoe snel vind je via Direct Wonen een woning in? De praktijk",
+    "href": "/hoe-snel-vind-je-via-direct-wonen-een-woning-in-de-praktijk/"
+  },
+  {
+    "label": "Een mancave: helemaal je eigen plek, ook om te slapen",
+    "href": "/een-mancave-helemaal-je-eigen-plek-ook-om-te-slapen/"
+  },
+  {
+    "label": "Hoe kaarsen zorgen voor meer rust in de slaapkamer",
+    "href": "/hoe-kaarsen-zorgen-voor-meer-rust-in-de-slaapkamer/"
+  },
+  {
+    "label": "Optimaliseer uw bedrijfsvoering met Microsoft Office 365",
+    "href": "/optimaliseer-uw-bedrijfsvoering-met-microsoft-office-365/"
+  },
+  {
+    "label": "En suite badkamer: rustige overgang ",
+    "href": "/en-suite-badkamer-rustige-overgang/"
+  },
+  {
+    "label": "Zo creëer je rust en luxe in je slaapkamer",
+    "href": "/zo-creeer-je-rust-en-luxe-in-je-slaapkamer/"
+  },
+  {
+    "label": "De kracht van kleur: Zo kies je het perfecte behang voor een kleine kamer",
+    "href": "/de-kracht-van-kleur-zo-kies-je-het-perfecte-behang-voor-een-kleine-kamer/"
+  },
+  {
+    "label": "Geen krassen of vlekken meer: 5 gouden regels voor het onderhoud van je gewrapte keuken",
+    "href": "/geen-krassen-of-vlekken-meer-5-gouden-regels-voor-het-onderhoud-van-je-gewrapte-keuken/"
+  },
+  {
+    "label": "Zo upgrade je je slaapkamer gemakkelijk",
+    "href": "/zo-upgrade-je-je-slaapkamer-gemakkelijk/"
+  },
+  {
+    "label": "Een frisse slaapkamer",
+    "href": "/een-frisse-slaapkamer/"
+  },
+  {
+    "label": "Een zitzak in de slaapkamer: zo creëer je de perfecte ontspanningshoek",
+    "href": "/een-zitzak-in-de-slaapkamer-zo-creeer-je-de-perfecte-ontspanningshoek/"
+  },
+  {
+    "label": "Rust in je slaapkamer: waarom eenvoud vaak het verschil maakt",
+    "href": "/rust-in-je-slaapkamer-waarom-eenvoud-vaak-het-verschil-maakt/"
+  },
+  {
+    "label": "Woonkamer zonder bank: een frisse kijk op modern wonen",
+    "href": "/woonkamer-zonder-bank-een-frisse-kijk-op-modern-wonen/"
+  },
+  {
+    "label": "Plinten professioneel plaatsen in de slaapkamer: zo doe je het goed",
+    "href": "/plinten-professioneel-plaatsen-in-de-slaapkamer-zo-doe-je-het-goed/"
+  },
+  {
+    "label": "Vlaggenmastverlichting: zo voorkom je verblinding in huis",
+    "href": "/vlaggenmastverlichting-zo-voorkom-je-verblinding-in-huis/"
+  },
+  {
+    "label": "Trapverlichting met sensor en energie besparen",
+    "href": "/trapverlichting-met-sensor-en-energie-besparen/"
+  },
+  {
+    "label": "Verduistering in de slaapkamer: wat zijn de beste opties",
+    "href": "/verduistering-in-de-slaapkamer-wat-zijn-de-beste-opties/"
+  },
+  {
+    "label": "Een vloerkleed in de slaapkamer: dit zijn de do's en don'ts",
+    "href": "/een-vloerkleed-in-de-slaapkamer-dit-zijn-de-dos-en-donts/"
+  },
+  {
+    "label": "Hoe herken je oververhitting en hitte-uitputting op tijd?",
+    "href": "/hoe-herken-je-oververhitting-en-hitte-uitputting-op-tijd/"
+  },
+  {
+    "label": "De belangrijkste signalen van een versleten gevel",
+    "href": "/de-belangrijkste-signalen-van-een-versleten-gevel/"
+  },
+  {
+    "label": "Waarom vloerisolatie een slimme investering is voor je woning",
+    "href": "/waarom-vloerisolatie-een-slimme-investering-is-voor-je-woning/"
+  },
+  {
+    "label": "Veilig werken op hoogte tijdens een verbouwing",
+    "href": "/veilig-werken-op-hoogte-tijdens-een-verbouwing/"
+  },
+  {
+    "label": "Is jouw slaapkamer al klaar voor de toekomst? Tijd voor een slimme upgrade",
+    "href": "/is-jouw-slaapkamer-al-klaar-voor-de-toekomst-tijd-voor-een-slimme-upgrade/"
+  },
+  {
+    "label": "Een slaapkamer met een hotel-chic vibe: 5 stylingtips voor een luxe resultaat",
+    "href": "/een-slaapkamer-met-een-hotel-chic-vibe-5-stylingtips-voor-een-luxe-resultaat/"
+  },
+  {
+    "label": "Slaapkamer make-over: waarom de juiste basis onder je bed het verschil maakt",
+    "href": "/slaapkamer-make-over-waarom-de-juiste-basis-onder-je-bed-het-verschil-maakt/"
+  },
+  {
+    "label": "Giethars in de slaapkamer voor bijzondere accenten en een persoonlijke sfeer",
+    "href": "/giethars-in-de-slaapkamer-voor-bijzondere-accenten-en-een-persoonlijke-sfeer/"
+  }
+];
+---
+
+<PageLayout title="Sitemap" description="Overzicht van alle pagina's en blogartikelen op slaapkamerinspiratie.nl">
+  <article class="page-content">
+    <h1>Sitemap</h1>
+    <h2>Pagina's</h2>
+    <ul>
+      {pages.map((page) => (
+        <li><a href={page.href}>{page.label}</a></li>
+      ))}
+    </ul>
+    <h2>Blogartikelen</h2>
+    <ul>
+      {posts.map((post) => (
+        <li><a href={post.href}>{post.label}</a></li>
+      ))}
+    </ul>
+  </article>
+</PageLayout>

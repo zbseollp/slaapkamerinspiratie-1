@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import pageHtml from '../data/pages/kledingkasten.html?raw';
+
+const title = "Kledingkasten";
+const description = "Voor het sorteren van je kleding heb je een stevige en unieke kledingkast nodig. Deze kun je vinden op onze website in de categorie met diverse kledingkasten.";
+---
+
+<PageLayout title={title} description={description}>
+  <article class="page-content" set:html={pageHtml} />
+</PageLayout>

@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import pageHtml from '../data/pages/bedden.html?raw';
+
+const title = "Bedden";
+const description = "Bedden";
+---
+
+<PageLayout title={title} description={description}>
+  <article class="page-content" set:html={pageHtml} />
+</PageLayout>

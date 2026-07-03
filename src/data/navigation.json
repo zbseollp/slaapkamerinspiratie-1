@@ -1,0 +1,160 @@
+{
+  "header": [
+    {
+      "label": "Home",
+      "href": "/",
+      "children": []
+    },
+    {
+      "label": "Kledingkasten",
+      "href": "/kledingkasten/",
+      "children": [
+        {
+          "label": "Dressboy",
+          "href": "/beste-dressboy/",
+          "children": []
+        },
+        {
+          "label": "Boekenkast",
+          "href": "/beste-boekenkast/",
+          "children": []
+        },
+        {
+          "label": "Kledingstomer",
+          "href": "/beste-kledingstomer/",
+          "children": []
+        },
+        {
+          "label": "Open kledingkast",
+          "href": "/beste-open-kledingkast/",
+          "children": []
+        },
+        {
+          "label": "Kledingkast met spiegel",
+          "href": "/beste-kledingkast-met-spiegel/",
+          "children": []
+        },
+        {
+          "label": "Kledingkast kinderkamer",
+          "href": "/beste-kledingkast-kinderkamer/",
+          "children": []
+        }
+      ]
+    },
+    {
+      "label": "Bedden",
+      "href": "/bedden/",
+      "children": [
+        {
+          "label": "Boxspring matras",
+          "href": "/beste-boxspring-matras/",
+          "children": []
+        },
+        {
+          "label": "Infrarood verwarming",
+          "href": "/beste-infrarood-verwarming/",
+          "children": []
+        },
+        {
+          "label": "Slaapbank 2 persoons",
+          "href": "/beste-slaapbank-2-persoons/",
+          "children": []
+        },
+        {
+          "label": "Boxspring zonder hoofdbord",
+          "href": "/beste-boxspring-zonder-hoofdbord/",
+          "children": []
+        },
+        {
+          "label": "Slaapbank met opbergruimte",
+          "href": "/beste-slaapbank-met-opbergruimte/",
+          "children": []
+        },
+        {
+          "label": "Elektrische kruik volwassenen",
+          "href": "/beste-elektrische-kruik-volwassenen/",
+          "children": []
+        }
+      ]
+    },
+    {
+      "label": "Dekbed",
+      "href": "/dekbed/",
+      "children": [
+        {
+          "label": "Dekbedovertrek met rits",
+          "href": "/beste-dekbedovertrek-met-rits/",
+          "children": []
+        },
+        {
+          "label": "Satijnen dekbedovertrek",
+          "href": "/beste-satijnen-dekbedovertrek/",
+          "children": []
+        },
+        {
+          "label": "Flanellen dekbedovertrek",
+          "href": "/beste-flanellen-dekbedovertrek/",
+          "children": []
+        },
+        {
+          "label": "Dekbedovertrek 240x220",
+          "href": "/beste-dekbedovertrek-240x220/",
+          "children": []
+        },
+        {
+          "label": "Dekbedovertrek peuterbed",
+          "href": "/beste-dekbedovertrek-peuterbed/",
+          "children": []
+        },
+        {
+          "label": "Katoen satijn dekbedovertrek",
+          "href": "/beste-katoen-satijn-dekbedovertrek/",
+          "children": []
+        }
+      ]
+    },
+    {
+      "label": "Contact",
+      "href": "/contact/",
+      "children": []
+    }
+  ],
+  "footer": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Sitemap",
+      "href": "/sitemap/"
+    },
+    {
+      "label": "Bedden",
+      "href": "/bedden/"
+    },
+    {
+      "label": "Dekbed",
+      "href": "/dekbed/"
+    },
+    {
+      "label": "Verlichting",
+      "href": "/verlichting/"
+    },
+    {
+      "label": "Interieur",
+      "href": "/interieur/"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact/"
+    },
+    {
+      "label": "Kledingkasten",
+      "href": "/kledingkasten/"
+    },
+    {
+      "label": "Blog",
+      "href": "/blog/"
+    }
+  ]
+}

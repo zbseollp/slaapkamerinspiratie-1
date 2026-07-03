@@ -1,0 +1,28 @@
+{
+  "name": "slaapkamerinspiratie",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "migrate": "node scripts/migrate-wordpress.mjs",
+    "fetch-homepage": "node scripts/fetch-homepage.mjs",
+    "fetch-homepage-css": "node scripts/fetch-homepage-css.mjs",
+    "scrape-products": "node scripts/scrape-product-pages.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "astro": "^5.7.10"
+  },
+  "devDependencies": {
+    "fast-xml-parser": "^4.5.1",
+    "linkedom": "^0.18.12",
+    "typescript": "^5.7.3",
+    "wrangler": "^4.105.0"
+  }
+}

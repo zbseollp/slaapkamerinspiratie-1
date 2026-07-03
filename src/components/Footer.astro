@@ -1,0 +1,60 @@
+---
+import navigation from '../data/navigation.json';
+
+const { footer } = navigation;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <nav class="footer-nav" aria-label="Footer navigatie">
+      <ul>
+        {footer.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <p class="copyright">&copy; {year} slaapkamerinspiratie.nl</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid #eee;
+    margin-top: 3rem;
+    padding: 2rem 0;
+    background: #fafafa;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .footer-nav ul {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .footer-nav a {
+    text-decoration: none;
+    color: #444;
+  }
+
+  .footer-nav a:hover {
+    color: #1a5f4a;
+  }
+
+  .copyright {
+    margin: 0;
+    color: #888;
+    font-size: 0.9rem;
+  }
+</style>

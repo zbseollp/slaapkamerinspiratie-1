@@ -1,0 +1,24 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { PRODUCT_SLUGS } from '../data/product-slugs';
+
+const productsDir = join(process.cwd(), 'src/content/products');
+
+export async function getStaticPaths() {
+  return PRODUCT_SLUGS.map((fullSlug) => ({
+    params: { slug: fullSlug.replace(/^beste-/, '') },
+    props: { fullSlug },
+  }));
+}
+
+const { fullSlug } = Astro.props;
+
+const productMeta = JSON.parse(readFileSync(join(productsDir, `${fullSlug}.json`), 'utf8'));
+const productHtml = readFileSync(join(productsDir, `${fullSlug}.html`), 'utf8');
+---
+
+<PageLayout title={productMeta.title} description={productMeta.description}>
+  <article class="page-content product-page" set:html={productHtml} />
+</PageLayout>

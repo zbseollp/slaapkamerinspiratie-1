@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "tenantSlug": "slaapkamerinspiratie",
+  "githubRepo": "Vivekworks114/slaapkamerinspiratie",
+  "modules": ["blog"],
+  "enabledModules": ["blog"],
+  "blogContentPath": "src/content/blog",
+  "blogFileExtension": "mdx"
+}

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<PageLayout title="Blog" description="Blogartikelen over slaapkamer inspiratie en tips">
+  <article class="blog-listing">
+    <h1>Blog</h1>
+    <ul class="post-list">
+      {
+        posts.map((post) => (
+          <li>
+            <a href={`/${post.id}/`}>
+              <h2>{post.data.title}</h2>
+            </a>
+            <p>{post.data.description}</p>
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString('nl-NL', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          </li>
+        ))
+      }
+    </ul>
+  </article>
+</PageLayout>
+
+<style>
+  .blog-listing h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .post-list li {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .post-list h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .post-list a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post-list a:hover h2 {
+    color: #1a5f4a;
+  }
+
+  .post-list p {
+    margin: 0 0 0.5rem;
+    color: #555;
+  }
+
+  .post-list time {
+    color: #888;
+    font-size: 0.9rem;
+  }
+</style>

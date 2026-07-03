@@ -1,0 +1,106 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, pubDate, updatedDate, author, categories, tags } = entry.data;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <main class="main-content">
+    <article class="blog-post">
+      <header class="post-header">
+        <h1>{title}</h1>
+        <div class="post-meta">
+          <time datetime={pubDate.toISOString()}>
+            {pubDate.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+          {author && <span class="author">door {author}</span>}
+        </div>
+        {categories && categories.length > 0 && (
+          <ul class="categories">
+            {categories.map((category) => (
+              <li>{category}</li>
+            ))}
+          </ul>
+        )}
+      </header>
+      <div class="post-body">
+        <slot />
+      </div>
+      {tags && tags.length > 0 && (
+        <footer class="post-footer">
+          <ul class="tags">
+            {tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        </footer>
+      )}
+      {updatedDate && (
+        <p class="updated">
+          Bijgewerkt op{' '}
+          {updatedDate.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+      )}
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .main-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .post-header h1 {
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .post-meta {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .categories,
+  .tags {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .categories li,
+  .tags li {
+    background: #f0f0f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+  }
+
+  .post-body :global(img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .updated {
+    margin-top: 2rem;
+    color: #888;
+    font-size: 0.9rem;
+  }
+</style>

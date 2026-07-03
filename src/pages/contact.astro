@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import pageHtml from '../data/pages/contact.html?raw';
+
+const title = "Contact";
+const description = "Wil je contact met de redactie van slaapkamerinspiratie.nl of zou je een samenwerking met ons aan willen gaan?";
+---
+
+<PageLayout title={title} description={description}>
+  <article class="page-content" set:html={pageHtml} />
+</PageLayout>

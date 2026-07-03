@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import pageHtml from '../data/pages/home.html?raw';
+
+const title = "Home";
+const description = "Welkom bij slaapkamerinspiratie.nl - dé bron van ideeën en advies voor het creëren van jouw droomslaapkamer! Of je nu op zoek bent naar een rustgevende oase van sereniteit, een levendige en energieke ruimte, of een perfect gebalanceerde mix van stijlen, laat je inspireren en begeleiden op je reis na";
+---
+
+<PageLayout title={title} description={description}>
+  <article class="page-content" set:html={pageHtml} />
+</PageLayout>
