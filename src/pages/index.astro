@@ -1,11 +1,21 @@
 ---
-import PageLayout from '../layouts/PageLayout.astro';
-import pageHtml from '../data/pages/home.html?raw';
+import HomeLayout from '../layouts/HomeLayout.astro';
+import headerHtml from '../data/homepage/header.html?raw';
+import mainHtml from '../data/homepage/main.html?raw';
+import footerHtml from '../data/homepage/footer.html?raw';
+import meta from '../data/homepage/meta.json';
 
-const title = "Home";
-const description = "Welkom bij slaapkamerinspiratie.nl - dé bron van ideeën en advies voor het creëren van jouw droomslaapkamer! Of je nu op zoek bent naar een rustgevende oase van sereniteit, een levendige en energieke ruimte, of een perfect gebalanceerde mix van stijlen, laat je inspireren en begeleiden op je reis na";
+const { title, description, modifiedTime, ogImage, bodyClass } = meta;
 ---
 
-<PageLayout title={title} description={description}>
-  <article class="page-content" set:html={pageHtml} />
-</PageLayout>
+<HomeLayout
+  title={title}
+  description={description}
+  modifiedTime={modifiedTime}
+  ogImage={ogImage}
+  bodyClass={bodyClass}
+>
+  <Fragment set:html={headerHtml} />
+  <Fragment set:html={mainHtml} />
+  <Fragment set:html={footerHtml} />
+</HomeLayout>

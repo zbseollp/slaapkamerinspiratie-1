@@ -1,0 +1,130 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  modifiedTime?: string;
+  ogImage?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  modifiedTime = '',
+  ogImage = '/uploads/2022/12/Rectangle-36111.jpg',
+  bodyClass = 'home wp-singular page-template page-template-elementor_header_footer page page-id-18 wp-embed-responsive wp-theme-hello-elementor hello-elementor-default elementor-default elementor-template-full-width elementor-kit-9 elementor-page elementor-page-18',
+} = Astro.props;
+
+const stylesheets = [
+  '/css/theme/reset.css',
+  '/css/theme/theme.css',
+  '/css/theme/header-footer.css',
+  '/css/elementor/frontend.min.css',
+  '/css/elementor/post-9.css',
+  '/css/elementor/widget-image.min.css',
+  '/css/elementor/widget-nav-menu.min.css',
+  '/css/elementor/widget-heading.min.css',
+  '/css/elementor/widget-search-form.min.css',
+  '/css/elementor/fontawesome.min.css',
+  '/css/elementor/regular.min.css',
+  '/css/elementor/solid.min.css',
+  '/css/elementor/widget-social-icons.min.css',
+  '/css/elementor/apple-webkit.min.css',
+  '/css/elementor/widget-posts.min.css',
+  '/css/elementor/elementor-icons.min.css',
+  '/css/elementor/widget-icon-box.min.css',
+  '/css/elementor/post-18.css',
+  '/css/elementor/post-11.css',
+  '/css/elementor/post-15.css',
+  '/css/fonts/questrial.css',
+  '/css/fonts/roboto.css',
+  '/css/elementor/brands.min.css',
+  '/css/elementor/widget-text-editor.min.css',
+  '/css/site-nav-fixes.css',
+  '/css/homepage-blog-fixes.css',
+  '/css/blog-cards-fixes.css',
+];
+---
+
+<!doctype html>
+<html lang="nl-NL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href="https://slaapkamerinspiratie.nl/" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://slaapkamerinspiratie.nl/" />
+    <meta property="og:site_name" content="slaapkamerinspiratie.nl" />
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    <meta property="og:image" content={`https://slaapkamerinspiratie.nl${ogImage}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/uploads/2022/12/cropped-Group-18-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/uploads/2022/12/cropped-Group-18-192x192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/uploads/2022/12/cropped-Group-18-180x180.png" />
+    {stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
+    <style is:global>
+      .e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload),
+      .e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload) * {
+        background-image: none !important;
+      }
+      @media screen and (max-height: 1024px) {
+        .e-con.e-parent:nth-of-type(n + 3):not(.e-lazyloaded):not(.e-no-lazyload),
+        .e-con.e-parent:nth-of-type(n + 3):not(.e-lazyloaded):not(.e-no-lazyload) * {
+          background-image: none !important;
+        }
+      }
+      @media screen and (max-height: 640px) {
+        .e-con.e-parent:nth-of-type(n + 2):not(.e-lazyloaded):not(.e-no-lazyload),
+        .e-con.e-parent:nth-of-type(n + 2):not(.e-lazyloaded):not(.e-no-lazyload) * {
+          background-image: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link screen-reader-text" href="#content">Ga naar de inhoud</a>
+    <slot />
+    <script src="/js/homepage.js" defer></script>
+  </body>
+</html>
+
+<style is:global>
+  .screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    word-wrap: normal !important;
+    border: 0;
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  .screen-reader-text:focus {
+    background-color: #eee;
+    clip: auto !important;
+    clip-path: none;
+    color: #444;
+    display: block;
+    font-size: 1em;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+  }
+</style>

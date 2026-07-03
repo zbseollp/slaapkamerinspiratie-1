@@ -1,0 +1,82 @@
+/* Homepage "De laatste blogs" grid fixes */
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-posts-container.elementor-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 30px;
+  row-gap: 35px;
+  align-items: start;
+  width: 100%;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__thumbnail__link {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__thumbnail {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding-bottom: 66%;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__thumbnail img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__meta-data {
+  margin-bottom: 13px;
+  color: #adadad;
+  font-size: 12px;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__read-more {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-post__text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-posts-container.elementor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .elementor-18 .elementor-element.elementor-element-cdd94f3 .elementor-posts-container.elementor-grid {
+    grid-template-columns: 1fr;
+  }
+}

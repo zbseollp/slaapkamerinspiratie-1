@@ -1,0 +1,86 @@
+{
+  "1": {
+    "title": "Blog",
+    "description": "",
+    "canonical": "/blog/",
+    "ogImage": "",
+    "bodyClass": "wp-singular page-template page-template-elementor_header_footer page page-id-688 wp-embed-responsive wp-theme-hello-elementor hello-elementor-default elementor-default elementor-template-full-width elementor-kit-9 elementor-page elementor-page-688",
+    "postCss": [
+      "post-688.css",
+      "post-9.css",
+      "post-11.css",
+      "post-15.css"
+    ],
+    "pageNumber": 1
+  },
+  "2": {
+    "title": "Blog",
+    "description": "",
+    "canonical": "/blog/",
+    "ogImage": "",
+    "bodyClass": "wp-singular page-template page-template-elementor_header_footer page page-id-688 wp-embed-responsive paged-2 page-paged-2 wp-theme-hello-elementor hello-elementor-default elementor-page-21379 elementor-default elementor-template-full-width elementor-kit-9 elementor-page elementor-page-688",
+    "postCss": [
+      "post-688.css",
+      "post-9.css",
+      "post-11.css",
+      "post-15.css"
+    ],
+    "pageNumber": 2
+  },
+  "3": {
+    "title": "Blog",
+    "description": "",
+    "canonical": "/blog/",
+    "ogImage": "",
+    "bodyClass": "wp-singular page-template page-template-elementor_header_footer page page-id-688 wp-embed-responsive paged-3 page-paged-3 wp-theme-hello-elementor hello-elementor-default elementor-page-21379 elementor-default elementor-template-full-width elementor-kit-9 elementor-page elementor-page-688",
+    "postCss": [
+      "post-688.css",
+      "post-9.css",
+      "post-11.css",
+      "post-15.css"
+    ],
+    "pageNumber": 3
+  },
+  "4": {
+    "title": "Blog",
+    "description": "",
+    "canonical": "/blog/",
+    "ogImage": "",
+    "bodyClass": "wp-singular page-template page-template-elementor_header_footer page page-id-688 wp-embed-responsive paged-4 page-paged-4 wp-theme-hello-elementor hello-elementor-default elementor-page-21379 elementor-default elementor-template-full-width elementor-kit-9 elementor-page elementor-page-688",
+    "postCss": [
+      "post-688.css",
+      "post-9.css",
+      "post-11.css",
+      "post-15.css"
+    ],
+    "pageNumber": 4
+  },
+  "5": {
+    "title": "Blog",
+    "description": "",
+    "canonical": "/blog/",
+    "ogImage": "",
+    "bodyClass": "wp-singular page-template page-template-elementor_header_footer page page-id-688 wp-embed-responsive paged-5 page-paged-5 wp-theme-hello-elementor hello-elementor-default elementor-page-21379 elementor-default elementor-template-full-width elementor-kit-9 elementor-page elementor-page-688",
+    "postCss": [
+      "post-688.css",
+      "post-9.css",
+      "post-11.css",
+      "post-15.css"
+    ],
+    "pageNumber": 5
+  },
+  "6": {
+    "title": "Blog",
+    "description": "",
+    "canonical": "/blog/",
+    "ogImage": "",
+    "bodyClass": "wp-singular page-template page-template-elementor_header_footer page page-id-688 wp-embed-responsive paged-6 page-paged-6 wp-theme-hello-elementor hello-elementor-default elementor-page-21379 elementor-default elementor-template-full-width elementor-kit-9 elementor-page elementor-page-688",
+    "postCss": [
+      "post-688.css",
+      "post-9.css",
+      "post-11.css",
+      "post-15.css"
+    ],
+    "pageNumber": 6
+  }
+}

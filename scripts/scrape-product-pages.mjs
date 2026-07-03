@@ -44,6 +44,13 @@ function extractMainHtml(html) {
   return html.slice(start, end);
 }
 
+function stripBreadcrumbs(html) {
+  return html.replace(
+    /<div class="elementor-element[^"]* elementor-widget elementor-widget-text-editor"[^>]*>\s*<div class="elementor-widget-container">\s*<ol class="zbmp-breadcrumb"[\s\S]*?<\/ol>\s*<\/div>\s*<\/div>/gi,
+    ''
+  );
+}
+
 function processHtml(html) {
   let out = html;
 
@@ -70,6 +77,8 @@ function processHtml(html) {
 
   out = out.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
   out = out.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+
+  out = stripBreadcrumbs(out);
 
   return out.trim();
 }

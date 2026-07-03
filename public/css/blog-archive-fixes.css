@@ -1,0 +1,260 @@
+/* Blog archive listing (/blog/, /blog/2/, ...) — enhanced card design */
+
+.elementor-688 .elementor-element.elementor-element-c601176 {
+  padding: 56px 0 32px;
+}
+
+.elementor-688 .elementor-element-a2fe3c6 .elementor-heading-title {
+  font-family: 'Questrial', sans-serif;
+  font-size: 2.75rem;
+  font-weight: 400;
+  color: var(--e-global-color-primary, #111);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.elementor-688 .elementor-element-aac5fc2 {
+  padding: 0 0 96px;
+}
+
+/* 4-column post grid */
+.elementor-688 .elementor-element-e05f2d5 .elementor-posts-container.elementor-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 28px;
+  row-gap: 32px;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Card shell */
+.elementor-688 .elementor-element-e05f2d5 .elementor-post {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  border: 1px solid rgba(43, 43, 43, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post:hover {
+  transform: translateY(-4px);
+  border-color: rgba(43, 43, 43, 0.16);
+  box-shadow: 0 16px 40px rgba(17, 17, 17, 0.08);
+}
+
+/* Thumbnail */
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__thumbnail__link {
+  display: block;
+  width: 100% !important;
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__thumbnail {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding-bottom: 0 !important;
+  aspect-ratio: 16 / 10;
+  background: var(--e-global-color-b8618b2, #faf8f7);
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__thumbnail img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post:hover .elementor-post__thumbnail img {
+  transform: scale(1.04);
+}
+
+/* Card body */
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px 22px 22px;
+  gap: 0;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__title {
+  margin: 0 0 10px;
+  font-family: 'Questrial', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--e-global-color-primary, #111);
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__title a:hover {
+  color: #555;
+}
+
+/* Date with calendar icon */
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__meta-data {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  color: #888;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__meta-data span + span:before {
+  content: none !important;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post-date .far.fa-calendar-check {
+  color: #d26f6f;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Excerpt — clamp for equal card heights */
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__excerpt {
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__excerpt p {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--e-global-color-text, #2b2b2b);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Read more */
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--e-global-color-primary, #111);
+  transition: color 0.2s ease, gap 0.2s ease;
+}
+
+.elementor-688 .elementor-element-e05f2d5 .elementor-post__read-more:hover {
+  color: #555;
+  gap: 7px;
+}
+
+/* Pagination */
+.elementor-688 .elementor-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 56px;
+  padding-top: 8px;
+}
+
+.elementor-688 .elementor-pagination .page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(43, 43, 43, 0.12);
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--e-global-color-text, #2b2b2b);
+  text-decoration: none;
+  background: #fff;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.elementor-688 .elementor-pagination a.page-numbers:hover {
+  border-color: rgba(43, 43, 43, 0.28);
+  color: var(--e-global-color-primary, #111);
+  transform: translateY(-1px);
+}
+
+.elementor-688 .elementor-pagination .page-numbers.current {
+  background: var(--e-global-color-primary, #111);
+  border-color: var(--e-global-color-primary, #111);
+  color: #fff;
+}
+
+.elementor-688 .elementor-pagination .page-numbers.prev,
+.elementor-688 .elementor-pagination .page-numbers.next {
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+.elementor-688 .elementor-pagination span.page-numbers.prev,
+.elementor-688 .elementor-pagination span.page-numbers.next {
+  opacity: 0.4;
+  cursor: default;
+  transform: none;
+}
+
+@media (max-width: 1024px) {
+  .elementor-688 .elementor-element-e05f2d5 .elementor-posts-container.elementor-grid {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 24px;
+    row-gap: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .elementor-688 .elementor-element.elementor-element-c601176 {
+    padding: 36px 0 20px;
+  }
+
+  .elementor-688 .elementor-element-a2fe3c6 .elementor-heading-title {
+    font-size: 2rem;
+  }
+
+  .elementor-688 .elementor-element-e05f2d5 .elementor-posts-container.elementor-grid {
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+  }
+
+  .elementor-688 .elementor-element-aac5fc2 {
+    padding-bottom: 64px;
+  }
+
+  .elementor-688 .elementor-element-e05f2d5 .elementor-post__text {
+    padding: 18px 18px 20px;
+  }
+}

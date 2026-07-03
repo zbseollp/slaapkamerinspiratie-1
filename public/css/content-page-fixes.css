@@ -1,0 +1,35 @@
+/* Content page layout fixes matching live slaapkamerinspiratie.nl */
+
+.elementor-widget-theme-post-content .elementor-widget-container {
+  overflow-wrap: break-word;
+}
+
+.elementor-toc__body .elementor-toc__list-wrapper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.elementor-widget-breadcrumbs .elementor-widget-container {
+  overflow-x: auto;
+}
+
+.elementor-50 .elementor-button-wrapper .elementor-button {
+  display: inline-block;
+}
+
+.elementor-50 img.alignleft {
+  float: left;
+  margin: 0 1.5em 1em 0;
+}
+
+.elementor-50 img.alignright {
+  float: right;
+  margin: 0 0 1em 1.5em;
+}
+
+.elementor-50 .elementor-widget-text-editor::after {
+  content: '';
+  display: table;
+  clear: both;
+}

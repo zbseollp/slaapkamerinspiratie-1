@@ -1,0 +1,141 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage?: string;
+  bodyClass: string;
+  modifiedTime?: string;
+  publishedTime?: string;
+  postCss?: string[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '',
+  bodyClass,
+  modifiedTime = '',
+  publishedTime = '',
+  postCss = [],
+} = Astro.props;
+
+const baseStylesheets = [
+  '/css/theme/reset.css',
+  '/css/theme/theme.css',
+  '/css/theme/header-footer.css',
+  '/css/elementor/frontend.min.css',
+  '/css/elementor/post-9.css',
+  '/css/elementor/widget-image.min.css',
+  '/css/elementor/widget-nav-menu.min.css',
+  '/css/elementor/widget-heading.min.css',
+  '/css/elementor/widget-search-form.min.css',
+  '/css/elementor/widget-text-editor.min.css',
+  '/css/elementor/widget-social-icons.min.css',
+  '/css/elementor/widget-divider.min.css',
+  '/css/elementor/widget-accordion.min.css',
+  '/css/elementor/widget-table-of-contents.min.css',
+  '/css/elementor/widget-author-box.min.css',
+  '/css/elementor/widget-breadcrumbs.min.css',
+  '/css/elementor/widget-icon-list.min.css',
+  '/css/elementor/widget-post-info.min.css',
+  '/css/elementor/widget-form.min.css',
+  '/css/elementor/widget-posts.min.css',
+  '/css/elementor/fontawesome.min.css',
+  '/css/elementor/regular.min.css',
+  '/css/elementor/solid.min.css',
+  '/css/elementor/brands.min.css',
+  '/css/elementor/elementor-icons.min.css',
+  '/css/elementor/apple-webkit.min.css',
+  '/css/elementor/post-11.css',
+  '/css/elementor/post-15.css',
+  '/css/fonts/questrial.css',
+  '/css/fonts/roboto.css',
+  '/css/site-nav-fixes.css',
+  '/css/content-page-fixes.css',
+  '/css/category-page-fixes.css',
+  '/css/blog-post-fixes.css',
+  '/css/blog-archive-fixes.css',
+  '/css/sitemap-fixes.css',
+  '/css/blog-cards-fixes.css',
+];
+
+const pageStylesheets = postCss.map((file) => `/css/elementor/${file}`);
+const stylesheets = [...baseStylesheets, ...pageStylesheets.filter((href) => !baseStylesheets.includes(href))];
+
+const canonicalUrl = canonical.startsWith('http') ? canonical : `https://slaapkamerinspiratie.nl${canonical}`;
+---
+
+<!doctype html>
+<html lang="nl-NL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="slaapkamerinspiratie.nl" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {ogImage && <meta property="og:image" content={`https://slaapkamerinspiratie.nl${ogImage}`} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/uploads/2022/12/cropped-Group-18-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/uploads/2022/12/cropped-Group-18-192x192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/uploads/2022/12/cropped-Group-18-180x180.png" />
+    {stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
+    <style is:global>
+      .e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload),
+      .e-con.e-parent:nth-of-type(n + 4):not(.e-lazyloaded):not(.e-no-lazyload) * {
+        background-image: none !important;
+      }
+    </style>
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link screen-reader-text" href="#content">Ga naar de inhoud</a>
+    <slot />
+    <script src="/js/homepage.js" defer></script>
+    <script src="/js/product-page.js" defer></script>
+  </body>
+</html>
+
+<style is:global>
+  .screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    word-wrap: normal !important;
+    border: 0;
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  .screen-reader-text:focus {
+    background-color: #eee;
+    clip: auto !important;
+    clip-path: none;
+    color: #444;
+    display: block;
+    font-size: 1em;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+  }
+</style>

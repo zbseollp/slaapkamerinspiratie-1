@@ -1,11 +1,24 @@
 ---
-import PageLayout from '../layouts/PageLayout.astro';
-import pageHtml from '../data/pages/dekbed.html?raw';
+import ContentPageLayout from '../layouts/ContentPageLayout.astro';
+import headerHtml from '../data/homepage/header.html?raw';
+import footerHtml from '../data/homepage/footer.html?raw';
+import pageHtml from '../data/content-pages/dekbed.html?raw';
+import manifest from '../data/content-pages/manifest.json';
 
-const title = "Dekbed";
-const description = "Dekbed";
+const page = manifest.dekbed;
 ---
 
-<PageLayout title={title} description={description}>
-  <article class="page-content" set:html={pageHtml} />
-</PageLayout>
+<ContentPageLayout
+  title={page.title}
+  description={page.description}
+  canonical={page.canonical}
+  ogImage={page.ogImage}
+  bodyClass={page.bodyClass}
+  modifiedTime={page.modifiedTime}
+  publishedTime={page.publishedTime}
+  postCss={page.postCss}
+>
+  <Fragment set:html={headerHtml} />
+  <Fragment set:html={pageHtml} />
+  <Fragment set:html={footerHtml} />
+</ContentPageLayout>
