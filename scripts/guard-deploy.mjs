@@ -1,0 +1,197 @@
+#!/usr/bin/env node
+/**
+ * Refuse to deploy a build that would take live posts offline.
+ *
+ *   node scripts/guard-deploy.mjs            check, exit non-zero if unsafe
+ *   node scripts/guard-deploy.mjs --json     machine-readable report
+ *
+ * These tenants publish through Payload straight to the live site, and that
+ * content does not always land back in git. `wrangler deploy` replaces the
+ * whole site with ./dist, so any live URL the build does not contain becomes a
+ * 404 — permanently, since the source only ever existed on the live site.
+ * (That is exactly how 34 posts were lost on 2026-09-03.)
+ *
+ * This crawls the live blog listing, compares it against dist/, and fails when
+ * the deploy would drop anything. Wire it in front of every deploy:
+ *
+ *   "deploy": "npm run build && node scripts/guard-deploy.mjs && wrangler deploy"
+ *
+ * Override deliberately with ALLOW_CONTENT_LOSS=1 once the missing posts have
+ * been exported or re-imported — never as a reflex to get a deploy through.
+ */
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
+const asJson = process.argv.includes('--json');
+const allowLoss = process.env.ALLOW_CONTENT_LOSS === '1';
+
+function siteOrigin() {
+  for (const f of ['astro.config.mjs', 'astro.config.ts']) {
+    if (!existsSync(f)) continue;
+    const m = readFileSync(f, 'utf8').match(/site:\s*['"](https?:\/\/[^'"]+)['"]/);
+    if (m) return m[1].replace(/\/+$/, '');
+  }
+  return null;
+}
+
+/** Every route dist/ actually generated. */
+function builtRoutes(dir = 'dist', base = '') {
+  const out = new Set();
+  if (!existsSync(dir)) return out;
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.isDirectory()) {
+      for (const r of builtRoutes(join(dir, e.name), `${base}/${e.name}`)) out.add(r);
+    } else if (e.name === 'index.html') {
+      out.add(base === '' ? '/' : `${base}/`);
+    }
+  }
+  return out;
+}
+
+async function fetchText(url) {
+  try {
+    const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(25000) });
+    return res.ok ? await res.text() : '';
+  } catch {
+    return '';
+  }
+}
+
+const origin = siteOrigin();
+if (!origin) {
+  console.log('[guard-deploy] no `site` in astro.config — cannot compare against live, skipping');
+  process.exit(0);
+}
+
+const built = builtRoutes();
+if (built.size === 0) {
+  console.error('[guard-deploy] dist/ is empty — build before deploying');
+  process.exit(1);
+}
+
+// Listing paths differ per tenant, and several sites expose more than one
+// (/blog/ and /laatste-blogs/ list the same posts with different page sizes).
+// Crawl every one that answers rather than betting on the longest page: on
+// lifestyleguy the longest single page was the *shortest* archive.
+const CANDIDATES = ['/blog/', '/blogs/', '/artikelen/', '/laatste-berichten/', '/laatste-blogs/', '/'];
+const MAX_LISTING_PAGES = 80;
+
+/** Pagination links under one listing base. Anchored to that base because
+ *  several tenants have unrelated routes shaped like pagination
+ *  (/geld-lenen/1000/, /achteraf-betalen/500/) that would eat the page budget. */
+function paginationPattern(base) {
+  const prefix = base === '/' ? '' : base.replace(/\/+$/, '');
+  const target = `(?:https?://[^/"'\\s>]+)?(${prefix}/(?:page/)?\\d+/?)`;
+  // Minified HTML (astro-compress) drops the quotes, so an href="..."-only
+  // pattern sees nothing on those sites and the guard waves the deploy through.
+  return new RegExp(`href=(?:"${target}"|'${target}'|${target}(?=[\\s>]))`, 'gi');
+}
+
+let html = '';
+const crawled = new Set();
+let reachedAny = false;
+
+for (const candidate of CANDIDATES) {
+  const first = await fetchText(origin + candidate);
+  if (!first) continue;
+  reachedAny = true;
+  const pattern = paginationPattern(candidate);
+  const queue = [];
+  const enqueue = (body) => {
+    for (const m of body.matchAll(pattern)) {
+      const raw = m[1] ?? m[2] ?? m[3];
+      if (!raw) continue;
+      const path = raw.endsWith('/') ? raw : `${raw}/`;
+      if (!crawled.has(path) && crawled.size < MAX_LISTING_PAGES) {
+        crawled.add(path);
+        queue.push(path);
+      }
+    }
+  };
+  crawled.add(candidate);
+  html += first;
+  enqueue(first);
+  while (queue.length > 0) {
+    const body = await fetchText(origin + queue.shift());
+    html += body;
+    enqueue(body);
+  }
+}
+
+if (!reachedAny) {
+  console.error(`[guard-deploy] could not reach ${origin} — refusing to deploy blind`);
+  process.exit(1);
+}
+if (crawled.size >= MAX_LISTING_PAGES) {
+  console.log(`[guard-deploy] stopped at ${MAX_LISTING_PAGES} listing pages — deeper pages not checked`);
+}
+console.log(`[guard-deploy] crawled ${crawled.size} listing page(s) on ${origin}`);
+
+// Candidate article URLs. Routing differs per tenant — flat /<slug>/ on some,
+// /blog/<slug>/ on others — so accept up to two path segments and drop the
+// listing's own pagination pages, which are regenerated by the build anyway.
+const liveLinks = new Set();
+// Quoted and unquoted hrefs, with or without a trailing slash: minified pages
+// emit href=/slug/ and some tenants route at /slug with no slash at all. Both
+// were invisible to a quoted-and-slashed-only pattern, which made the guard
+// report "0 live URLs — OK" on exactly the sites it exists to protect.
+const SEG = '[a-z0-9][a-z0-9-]{2,}';
+const TARGET = `(?:https?://[^/"'\\s>]+)?(/${SEG}/?(?:[a-z0-9][a-z0-9-]{4,}/?)?)`;
+const ARTICLE_LINK = new RegExp(
+  `href=(?:"${TARGET}"|'${TARGET}'|${TARGET}(?=[\\s>]))`,
+  'gi',
+);
+for (const m of html.matchAll(ARTICLE_LINK)) {
+  const raw = m[1] ?? m[2] ?? m[3];
+  if (!raw) continue;
+  const path = raw.endsWith('/') ? raw : `${raw}/`;
+  if (/\/(?:page\/)?\d+\/$/.test(path)) continue;
+  liveLinks.add(path);
+}
+
+// A link on the listing is not proof the page exists — these sites carry dead
+// internal links (…/instagram-likes-kopen/ and friends already 404). Only a URL
+// that actually resolves can be lost by deploying, so confirm before blocking.
+const candidates = [...liveLinks].filter((u) => !built.has(u)).sort();
+const missing = [];
+const alreadyDead = [];
+for (const u of candidates) {
+  let ok = false;
+  try {
+    const res = await fetch(origin + u, { redirect: 'follow', signal: AbortSignal.timeout(20000) });
+    ok = res.ok;
+  } catch {
+    ok = false; // unreachable → treat as dead rather than blocking the deploy
+  }
+  (ok ? missing : alreadyDead).push(u);
+}
+if (alreadyDead.length > 0) {
+  console.log(
+    `[guard-deploy] ignoring ${alreadyDead.length} listing link(s) that already 404 live: ` +
+      alreadyDead.slice(0, 5).join(', ') + (alreadyDead.length > 5 ? ' …' : ''),
+  );
+}
+
+if (asJson) {
+  console.log(JSON.stringify({ origin, listings: [...crawled], live: liveLinks.size, built: built.size, missing }, null, 2));
+}
+
+if (missing.length === 0) {
+  console.log(`[guard-deploy] OK — all ${liveLinks.size} live URL(s) exist in dist/ (${built.size} routes)`);
+  process.exit(0);
+}
+
+console.error(`\n[guard-deploy] ${missing.length} live URL(s) are NOT in this build:`);
+for (const u of missing.slice(0, 40)) console.error(`  · ${origin}${u}`);
+if (missing.length > 40) console.error(`  … and ${missing.length - 40} more`);
+
+if (allowLoss) {
+  console.error('\nALLOW_CONTENT_LOSS=1 set — deploying anyway. Make sure these are exported.\n');
+  process.exit(0);
+}
+console.error(
+  '\nDeploying would 404 these pages and the content exists nowhere else.\n' +
+    'Sync them into src/content/blog first, or export them and re-run with\n' +
+    'ALLOW_CONTENT_LOSS=1 if the loss is intentional.\n',
+);
+process.exit(1);

@@ -26,7 +26,8 @@
     "enrich-blog-archive": "node scripts/enrich-blog-archive.mjs",
     "fetch-blog-archive-all": "node scripts/fetch-blog-archive.mjs && node scripts/enrich-blog-archive.mjs",
     "enrich-homepage-blog": "node scripts/enrich-homepage-blog.mjs",
-    "scrape-products": "node scripts/scrape-product-pages.mjs"
+    "scrape-products": "node scripts/scrape-product-pages.mjs",
+    "deploy": "npm run build && node scripts/guard-deploy.mjs && npx wrangler deploy"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
