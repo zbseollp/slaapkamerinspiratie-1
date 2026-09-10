@@ -1,4 +1,12 @@
 ---
+/**
+ * Fallback nav used only on non-article pages that still import this component.
+ * Payload blog posts must NOT use this — they use the Elementor header via
+ * BlogPostLayout so dropdowns match the live site.
+ *
+ * Critical CSS rule: only the TOP-LEVEL ul is flex. Nesting `.main-nav ul`
+ * would override `.submenu { display: none }` and leave every dropdown open.
+ */
 import navigation from '../data/navigation.json';
 
 const { header } = navigation;
@@ -15,25 +23,16 @@ const { header } = navigation;
       />
     </a>
     <nav class="main-nav" aria-label="Hoofdnavigatie">
-      <ul>
+      <ul class="nav-root">
         {
           header.map((item) => (
             <li class:list={[{ 'has-children': item.children?.length }]}>
               <a href={item.href}>{item.label}</a>
               {item.children && item.children.length > 0 && (
-                <ul class="submenu">
+                <ul class="submenu" hidden>
                   {item.children.map((child) => (
                     <li>
                       <a href={child.href}>{child.label}</a>
-                      {child.children && child.children.length > 0 && (
-                        <ul class="submenu">
-                          {child.children.map((grandchild) => (
-                            <li>
-                              <a href={grandchild.href}>{grandchild.label}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                     </li>
                   ))}
                 </ul>
@@ -50,6 +49,8 @@ const { header } = navigation;
   .site-header {
     border-bottom: 1px solid #eee;
     background: #fff;
+    position: relative;
+    z-index: 100;
   }
 
   .container {
@@ -72,12 +73,14 @@ const { header } = navigation;
     width: auto;
   }
 
-  .main-nav ul {
+  /* ONLY the top-level list — never `.main-nav ul` (that forced submenus open). */
+  .main-nav > .nav-root {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.25rem 1.25rem;
   }
 
@@ -87,7 +90,8 @@ const { header } = navigation;
     font-weight: 500;
   }
 
-  .main-nav a:hover {
+  .main-nav a:hover,
+  .main-nav a:focus-visible {
     color: #1a5f4a;
   }
 
@@ -96,6 +100,9 @@ const { header } = navigation;
   }
 
   .submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
     display: none;
     position: absolute;
     top: 100%;
@@ -104,23 +111,34 @@ const { header } = navigation;
     background: #fff;
     border: 1px solid #eee;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 0.5rem 0;
     flex-direction: column;
-    z-index: 10;
+    z-index: 200;
   }
 
-  .has-children:hover > .submenu {
+  .submenu[hidden] {
+    display: none !important;
+  }
+
+  .has-children:hover > .submenu,
+  .has-children:focus-within > .submenu {
     display: flex;
+  }
+
+  .has-children:hover > .submenu[hidden],
+  .has-children:focus-within > .submenu[hidden] {
+    display: flex !important;
   }
 
   .submenu li {
     padding: 0;
+    margin: 0;
   }
 
   .submenu a {
     display: block;
     padding: 0.5rem 1rem;
     font-weight: 400;
+    white-space: nowrap;
   }
 
   @media (max-width: 768px) {
@@ -129,9 +147,11 @@ const { header } = navigation;
       align-items: flex-start;
     }
 
-    .main-nav ul {
+    .main-nav > .nav-root {
       flex-direction: column;
+      align-items: flex-start;
       gap: 0.5rem;
+      width: 100%;
     }
 
     .submenu {
@@ -139,10 +159,7 @@ const { header } = navigation;
       box-shadow: none;
       border: none;
       padding-left: 1rem;
-    }
-
-    .has-children:hover > .submenu {
-      display: flex;
+      min-width: 0;
     }
   }
 </style>

@@ -1,84 +1,140 @@
 ---
-import BaseLayout from './BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+/**
+ * Site chrome for Payload-rendered blog posts.
+ * Always uses the scraped Elementor header/footer (same as legacy posts)
+ * so nav dropdowns never regress to the broken custom Header submenu.
+ */
+import ContentPageLayout from './ContentPageLayout.astro';
+import headerHtml from '../data/homepage/header.html?raw';
+import footerHtml from '../data/homepage/footer.html?raw';
 import type { CollectionEntry } from 'astro:content';
 import { getPostImage } from '../lib/blog';
 
 interface Props {
   entry: CollectionEntry<'blog'>;
+  canonical?: string;
+  bodyClass?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  postCss?: string[];
 }
 
-const { entry } = Astro.props;
+const DEFAULT_BODY_CLASS =
+  'wp-singular post-template-default single single-post wp-embed-responsive wp-theme-hello-elementor hello-elementor-default elementor-default elementor-kit-9 elementor-page elementor-page-21379';
+
+const {
+  entry,
+  canonical,
+  bodyClass = DEFAULT_BODY_CLASS,
+  publishedTime = '',
+  modifiedTime = '',
+  postCss = ['post-21379.css'],
+} = Astro.props;
+
 const { title, description, pubDate, updatedDate, author, categories, tags } = entry.data;
 const image = getPostImage(entry);
 const imageAlt =
   (entry.data as { featuredImageAlt?: string }).featuredImageAlt || title;
+const dateLabel = pubDate.toLocaleDateString('nl-NL', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const canonicalUrl =
+  canonical || `https://slaapkamerinspiratie.nl/${entry.id}/`;
 ---
 
-<BaseLayout title={title} description={description} ogImage={image}>
-  <Header />
-  <main class="main-content">
-    <article class="blog-post">
-      <header class="post-header">
-        <h1>{title}</h1>
-        <div class="post-meta">
-          <time datetime={pubDate.toISOString()}>
-            {pubDate.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-          {author && <span class="author">door {author}</span>}
+<ContentPageLayout
+  title={title}
+  description={description || ''}
+  canonical={canonicalUrl}
+  ogImage={image || ''}
+  bodyClass={bodyClass}
+  publishedTime={publishedTime || pubDate.toISOString()}
+  modifiedTime={modifiedTime || (updatedDate ? updatedDate.toISOString() : '')}
+  postCss={postCss}
+>
+  <Fragment set:html={headerHtml} />
+  <main id="content" class="payload-post">
+    <article class="payload-post__article">
+      <header class="payload-post__header">
+        <h1 class="payload-post__title">{title}</h1>
+        <div class="payload-post__meta">
+          <time datetime={pubDate.toISOString()}>{dateLabel}</time>
+          {author && <span class="payload-post__author">door {author}</span>}
         </div>
-        {categories && categories.length > 0 && (
-          <ul class="categories">
-            {categories.map((category) => (
-              <li>{category}</li>
-            ))}
-          </ul>
-        )}
+        {
+          categories && categories.length > 0 && (
+            <ul class="payload-post__categories">
+              {categories.map((category) => (
+                <li>{category}</li>
+              ))}
+            </ul>
+          )
+        }
         {
           image && (
-            <figure class="featured-image">
-              <img src={image} alt={imageAlt} width="1200" height="675" loading="eager" decoding="async" />
+            <figure class="payload-post__featured">
+              <img
+                src={image}
+                alt={imageAlt}
+                width="1200"
+                height="675"
+                loading="eager"
+                decoding="async"
+              />
             </figure>
           )
         }
       </header>
-      <div class="post-body">
+      <div class="payload-post__body">
         <slot />
       </div>
-      {tags && tags.length > 0 && (
-        <footer class="post-footer">
-          <ul class="tags">
-            {tags.map((tag) => (
-              <li>{tag}</li>
-            ))}
-          </ul>
-        </footer>
-      )}
-      {updatedDate && (
-        <p class="updated">
-          Bijgewerkt op{' '}
-          {updatedDate.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}
-        </p>
-      )}
+      {
+        tags && tags.length > 0 && (
+          <footer class="payload-post__tags">
+            <ul>
+              {tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          </footer>
+        )
+      }
+      {
+        updatedDate && (
+          <p class="payload-post__updated">
+            Bijgewerkt op{' '}
+            {updatedDate.toLocaleDateString('nl-NL', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </p>
+        )
+      }
     </article>
   </main>
-  <Footer />
-</BaseLayout>
+  <Fragment set:html={footerHtml} />
+</ContentPageLayout>
 
-<style>
-  .main-content {
-    max-width: 800px;
+<style is:global>
+  .payload-post {
+    max-width: 920px;
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 3rem;
   }
 
-  .post-header h1 {
-    margin-bottom: 0.5rem;
-    line-height: 1.2;
+  .payload-post__title {
+    font-family: 'Questrial', sans-serif;
+    font-size: clamp(1.75rem, 3vw, 2.35rem);
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+    color: #111;
   }
 
-  .post-meta {
+  .payload-post__meta {
     color: #666;
     font-size: 0.95rem;
     margin-bottom: 1rem;
@@ -87,11 +143,27 @@ const imageAlt =
     flex-wrap: wrap;
   }
 
-  .featured-image {
-    margin: 1.25rem 0 0;
+  .payload-post__categories {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
-  .featured-image img {
+  .payload-post__categories li {
+    background: #f0f0f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+  }
+
+  .payload-post__featured {
+    margin: 0 0 1.75rem;
+  }
+
+  .payload-post__featured img {
     display: block;
     width: 100%;
     height: auto;
@@ -99,29 +171,67 @@ const imageAlt =
     object-fit: cover;
   }
 
-  .categories,
-  .tags {
+  .payload-post__body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: #2b2b2b;
+  }
+
+  .payload-post__body > :first-child {
+    margin-top: 0;
+  }
+
+  .payload-post__body h2,
+  .payload-post__body h3 {
+    font-family: 'Questrial', sans-serif;
+    font-weight: 400;
+    color: #111;
+    margin: 2rem 0 1rem;
+    line-height: 1.3;
+  }
+
+  .payload-post__body h2 {
+    font-size: 1.65rem;
+  }
+
+  .payload-post__body h3 {
+    font-size: 1.35rem;
+  }
+
+  .payload-post__body p {
+    margin: 0 0 1.25rem;
+  }
+
+  .payload-post__body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .payload-post__body ul,
+  .payload-post__body ol {
+    margin: 0 0 1.25rem 1.25rem;
+  }
+
+  .payload-post__tags ul {
     list-style: none;
     padding: 0;
+    margin: 2rem 0 0;
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
   }
 
-  .categories li,
-  .tags li {
+  .payload-post__tags li {
     background: #f0f0f0;
     padding: 0.25rem 0.75rem;
     border-radius: 999px;
     font-size: 0.85rem;
   }
 
-  .post-body :global(img) {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .updated {
+  .payload-post__updated {
     margin-top: 2rem;
     color: #888;
     font-size: 0.9rem;

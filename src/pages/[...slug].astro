@@ -3,9 +3,8 @@
  * Blog post routes.
  *
  * - Legacy WordPress posts (`WpContent` / `__html`) keep scraped Elementor HTML.
- * - Payload-synced markdown renders from the content collection so CMS publish
- *   goes live without `npm run fetch-blog-all`, and updates are not shadowed
- *   by a stale scrape.
+ * - Payload-synced markdown renders from the content collection, but ALWAYS
+ *   inside the Elementor header/footer so nav dropdowns match the rest of the site.
  */
 import ContentPageLayout from '../layouts/ContentPageLayout.astro';
 import BlogPostLayout from '../layouts/BlogPostLayout.astro';
@@ -81,7 +80,14 @@ const resolvedImage = getPostImage(entry);
       <Fragment set:html={footerHtml} />
     </ContentPageLayout>
   ) : Content ? (
-    <BlogPostLayout entry={entry}>
+    <BlogPostLayout
+      entry={entry}
+      canonical={page?.canonical || `https://slaapkamerinspiratie.nl/${slug}/`}
+      bodyClass={page?.bodyClass || DEFAULT_BODY_CLASS}
+      publishedTime={page?.publishedTime}
+      modifiedTime={page?.modifiedTime}
+      postCss={page?.postCss || ['post-21379.css']}
+    >
       <Content />
     </BlogPostLayout>
   ) : null
