@@ -1,5 +1,17 @@
 /* Blog post content styling (Elementor template 21379) */
 
+.elementor-21379 .elementor-widget-theme-post-featured-image .elementor-widget-container {
+  margin: 0 0 1.25rem;
+}
+
+.elementor-21379 .elementor-widget-theme-post-featured-image img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 .elementor-21379 .elementor-widget-theme-post-content .elementor-widget-container {
   font-family: 'Roboto', sans-serif;
   font-size: 17px;

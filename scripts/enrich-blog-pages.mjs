@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolvePostImageFromFile } from './lib/resolve-post-image.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -27,15 +28,10 @@ function processContentHtml(html) {
 }
 
 function pickMdxImage(slug) {
-  const mdxPath = path.join(BLOG_MDX_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(mdxPath)) return '';
-
-  const content = fs.readFileSync(mdxPath, 'utf8');
-  const images = [...content.matchAll(/\/uploads\/[^"\\]+\.(?:jpe?g|png|webp)/gi)].map((m) =>
-    m[0].replace(/\\"/g, '')
-  );
-  const filtered = images.filter((img) => !/32x32|150x150|cropped-group|Group-18|icon/i.test(img));
-  return filtered[0] || '';
+  const candidates = [`${slug}.mdx`, `${slug}.md`].map((f) => path.join(BLOG_MDX_DIR, f));
+  const filePath = candidates.find((p) => fs.existsSync(p));
+  if (!filePath) return '';
+  return resolvePostImageFromFile(filePath, ROOT) || '';
 }
 
 function normalizePostImages(html) {

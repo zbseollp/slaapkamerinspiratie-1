@@ -6,8 +6,14 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "sanitize:blog": "node scripts/sanitize-blog.mjs",
+    "assert:publish": "node scripts/assert-publish-ready.mjs",
+    "apply:images": "node scripts/apply-payload-images.mjs",
+    "inject:archive": "node scripts/inject-payload-archive.mjs",
+    "inject:homepage": "node scripts/inject-payload-homepage.mjs",
+    "prebuild": "npm run sanitize:blog && npm run assert:publish",
     "dev": "astro dev",
-    "build": "node scripts/enrich-homepage-blog.mjs && node scripts/enrich-blog-pages.mjs && node scripts/enrich-blog-archive.mjs && node scripts/enrich-sitemap.mjs && astro build",
+    "build": "node scripts/enrich-homepage-blog.mjs && npm run inject:homepage && node scripts/enrich-blog-pages.mjs && npm run apply:images && node scripts/enrich-blog-archive.mjs && npm run inject:archive && node scripts/enrich-sitemap.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "migrate": "node scripts/migrate-wordpress.mjs",

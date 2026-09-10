@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadBlogImageMap, preferExistingPublicUrl } from './lib/resolve-post-image.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -105,10 +106,11 @@ function loadBlogManifestImages() {
 }
 
 function pickMdxImage(slug) {
-  const mdxPath = path.join(BLOG_MDX_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(mdxPath)) return '';
+  const candidates = [`${slug}.mdx`, `${slug}.md`].map((f) => path.join(BLOG_MDX_DIR, f));
+  const filePath = candidates.find((p) => fs.existsSync(p));
+  if (!filePath) return '';
 
-  const content = fs.readFileSync(mdxPath, 'utf8');
+  const content = fs.readFileSync(filePath, 'utf8');
   const images = [...content.matchAll(/\/uploads\/[^"\\]+\.(?:jpe?g|png|webp)/gi)].map((m) =>
     m[0].replace(/\\"/g, '')
   );
@@ -116,9 +118,13 @@ function pickMdxImage(slug) {
   return filtered.length ? filtered[0] : '';
 }
 
-function resolveImage(slug, wpThumbs, manifestImages) {
-  const raw = wpThumbs[slug] || manifestImages[slug] || pickMdxImage(slug);
-  return raw ? pickBestLocalImage(raw) : FALLBACK_IMAGE;
+function resolveImage(slug, wpThumbs, manifestImages, blogImages) {
+  const raw =
+    blogImages.get(slug) ||
+    wpThumbs[slug] ||
+    manifestImages[slug] ||
+    pickMdxImage(slug);
+  return raw ? pickBestLocalImage(preferExistingPublicUrl(raw, ROOT)) : FALLBACK_IMAGE;
 }
 
 function buildThumbnail(slug, imageUrl, title) {
@@ -169,7 +175,7 @@ function enrichArticle(articleHtml, slug, title, imageUrl) {
   return updated;
 }
 
-function processHtml(html, wpThumbs, manifestImages) {
+function processHtml(html, wpThumbs, manifestImages, blogImages) {
   let result = html;
 
   if (!/id="content"/.test(result)) {
@@ -192,7 +198,7 @@ function processHtml(html, wpThumbs, manifestImages) {
       const slugMatch = articleHtml.match(/href="\/([^/]+)\/"[^>]*>\s*([^<]+?)\s*<\/a>/);
       if (!slugMatch) return articleHtml;
       const [, slug, title] = slugMatch;
-      const imageUrl = resolveImage(slug, wpThumbs, manifestImages);
+      const imageUrl = resolveImage(slug, wpThumbs, manifestImages, blogImages);
       return enrichArticle(articleHtml, slug, title, imageUrl);
     }
   );
@@ -210,13 +216,14 @@ async function main() {
 
   const wpThumbs = loadWpThumbnails();
   const manifestImages = loadBlogManifestImages();
+  const blogImages = loadBlogImageMap(ROOT);
   const files = fs.readdirSync(ARCHIVE_DIR).filter((f) => f.endsWith('.html'));
   let updated = 0;
 
   for (const file of files) {
     const filePath = path.join(ARCHIVE_DIR, file);
     const html = fs.readFileSync(filePath, 'utf8');
-    const next = processHtml(html, wpThumbs, manifestImages);
+    const next = processHtml(html, wpThumbs, manifestImages, blogImages);
 
     if (next !== html) {
       fs.writeFileSync(filePath, next);

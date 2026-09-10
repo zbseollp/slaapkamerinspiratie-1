@@ -65,6 +65,15 @@ const pageStylesheets = postCss.map((file) => `/css/elementor/${file}`);
 const stylesheets = [...baseStylesheets, ...pageStylesheets.filter((href) => !baseStylesheets.includes(href))];
 
 const canonicalUrl = canonical.startsWith('http') ? canonical : `https://slaapkamerinspiratie.nl${canonical}`;
+
+function toAbsoluteOg(image: string): string {
+  if (!image) return '';
+  if (/^https?:\/\//i.test(image)) return image;
+  const path = image.startsWith('/') ? image : `/${image}`;
+  return `https://slaapkamerinspiratie.nl${path}`;
+}
+
+const ogAbsolute = toAbsoluteOg(ogImage);
 ---
 
 <!doctype html>
@@ -87,7 +96,7 @@ const canonicalUrl = canonical.startsWith('http') ? canonical : `https://slaapka
     <meta property="og:site_name" content="slaapkamerinspiratie.nl" />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
-    {ogImage && <meta property="og:image" content={`https://slaapkamerinspiratie.nl${ogImage}`} />}
+    {ogAbsolute && <meta property="og:image" content={ogAbsolute} />}
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/uploads/2022/12/cropped-Group-18-32x32.png" sizes="32x32" />
     <link rel="icon" href="/uploads/2022/12/cropped-Group-18-192x192.png" sizes="192x192" />

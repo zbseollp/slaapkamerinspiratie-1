@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolvePostImageFromFile, preferExistingPublicUrl } from './lib/resolve-post-image.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -23,13 +24,23 @@ function toLocalUrl(url) {
 }
 
 function toMediumUrl(url) {
+  if (!url) return '';
+  // Payload/R2 absolute URLs — keep as-is (no local WP size variants).
+  if (/^https?:\/\//i.test(url) && !url.includes('slaapkamerinspiratie.nl')) {
+    return url;
+  }
   const local = toLocalUrl(url);
-  if (!local) return '';
+  if (!local) return url.startsWith('/') ? url : '';
+  if (!local.startsWith('/uploads/')) return local;
   const sized = local.replace(
     /(\/uploads\/\d{4}\/\d{2}\/)([^/]+?)(-\d+x\d+)?\.(jpe?g|png|webp)$/i,
     (_, prefix, base, _size, ext) => `${prefix}${base}-300x200.${ext}`
   );
-  return sized !== local ? sized : local;
+  // Prefer sized only when the file exists; otherwise keep full local path.
+  if (sized !== local && fs.existsSync(path.join(ROOT, 'public', sized.replace(/^\//, '')))) {
+    return sized;
+  }
+  return local;
 }
 
 function loadWpThumbnails() {
@@ -68,18 +79,11 @@ function loadWpThumbnails() {
 }
 
 function pickMdxImage(slug) {
-  const mdxPath = path.join(BLOG_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(mdxPath)) return '';
-
-  const content = fs.readFileSync(mdxPath, 'utf-8');
-  const images = [...content.matchAll(/\/uploads\/[^"\\]+\.(?:jpe?g|png|webp)/gi)].map((m) =>
-    m[0].replace(/\\"/g, '')
-  );
-
-  const filtered = images.filter(
-    (img) => !/32x32|150x150|cropped-group|Group-18|icon/i.test(img)
-  );
-  return filtered.length ? toMediumUrl(filtered[0]) : '';
+  const candidates = [`${slug}.mdx`, `${slug}.md`].map((f) => path.join(BLOG_DIR, f));
+  const filePath = candidates.find((p) => fs.existsSync(p));
+  if (!filePath) return '';
+  const resolved = preferExistingPublicUrl(resolvePostImageFromFile(filePath, ROOT), ROOT);
+  return resolved ? toMediumUrl(resolved) : '';
 }
 
 async function fetchLiveOgImage(slug) {

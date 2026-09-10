@@ -46,10 +46,11 @@ function processContentHtml(html) {
 }
 
 function pickMdxImage(slug) {
-  const mdxPath = path.join(BLOG_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(mdxPath)) return '';
+  const candidates = [`${slug}.mdx`, `${slug}.md`].map((f) => path.join(BLOG_DIR, f));
+  const filePath = candidates.find((p) => fs.existsSync(p));
+  if (!filePath) return '';
 
-  const content = fs.readFileSync(mdxPath, 'utf8');
+  const content = fs.readFileSync(filePath, 'utf8');
   const images = [...content.matchAll(/\/uploads\/[^"\\]+\.(?:jpe?g|png|webp)/gi)].map((m) =>
     m[0].replace(/\\"/g, '')
   );

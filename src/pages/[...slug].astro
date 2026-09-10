@@ -1,45 +1,88 @@
 ---
+/**
+ * Blog post routes.
+ *
+ * - Legacy WordPress posts (`WpContent` / `__html`) keep scraped Elementor HTML.
+ * - Payload-synced markdown renders from the content collection so CMS publish
+ *   goes live without `npm run fetch-blog-all`, and updates are not shadowed
+ *   by a stale scrape.
+ */
 import ContentPageLayout from '../layouts/ContentPageLayout.astro';
+import BlogPostLayout from '../layouts/BlogPostLayout.astro';
 import headerHtml from '../data/homepage/header.html?raw';
 import footerHtml from '../data/homepage/footer.html?raw';
-import { getCollection } from 'astro:content';
-import { readFileSync } from 'node:fs';
+import { getCollection, render } from 'astro:content';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import manifest from '../data/blog-pages/manifest.json';
+import { getPostImage, isLegacyWpBlogBody, isListedBlogEntry } from '../lib/blog';
 
 const DEFAULT_BODY_CLASS =
   'wp-singular post-template-default single single-post wp-embed-responsive wp-theme-hello-elementor hello-elementor-default elementor-default elementor-kit-9 elementor-page elementor-page-21379';
 
+type ManifestEntry = {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  bodyClass?: string;
+  modifiedTime?: string;
+  publishedTime?: string;
+  postCss?: string[];
+};
+
+function loadManifest(): Record<string, ManifestEntry> {
+  const path = join(process.cwd(), 'src/data/blog-pages/manifest.json');
+  if (!existsSync(path)) return {};
+  try {
+    return JSON.parse(readFileSync(path, 'utf8')) as Record<string, ManifestEntry>;
+  } catch {
+    return {};
+  }
+}
+
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
+  const blogEntries = await getCollection('blog', (entry) => isListedBlogEntry(entry));
 
   return blogEntries.map((entry) => ({
     params: { slug: entry.id },
-    props: { slug: entry.id },
+    props: { entry },
   }));
 }
 
-const { slug } = Astro.props;
-const page = manifest[slug as keyof typeof manifest];
+const { entry } = Astro.props as {
+  entry: Awaited<ReturnType<typeof getCollection<'blog'>>>[number];
+};
+const slug = entry.id;
+const manifest = loadManifest();
+const page = manifest[slug];
+const scrapedPath = join(process.cwd(), 'src/data/blog-pages', `${slug}.html`);
+const useScrape =
+  isLegacyWpBlogBody(entry.body) && Boolean(page) && existsSync(scrapedPath);
 
-if (!page) {
-  throw new Error(`Missing blog page data for "${slug}". Run: npm run fetch-blog-all`);
-}
-
-const pageHtml = readFileSync(join(process.cwd(), 'src/data/blog-pages', `${slug}.html`), 'utf8');
+const { Content } = useScrape ? { Content: null } : await render(entry);
+const pageHtml = useScrape ? readFileSync(scrapedPath, 'utf8') : '';
+const resolvedImage = getPostImage(entry);
 ---
 
-<ContentPageLayout
-  title={page.title}
-  description={page.description}
-  canonical={page.canonical}
-  ogImage={page.ogImage}
-  bodyClass={page.bodyClass || DEFAULT_BODY_CLASS}
-  modifiedTime={page.modifiedTime}
-  publishedTime={page.publishedTime}
-  postCss={page.postCss || ['post-21379.css']}
->
-  <Fragment set:html={headerHtml} />
-  <Fragment set:html={pageHtml} />
-  <Fragment set:html={footerHtml} />
-</ContentPageLayout>
+{
+  useScrape && page ? (
+    <ContentPageLayout
+      title={page.title || entry.data.title}
+      description={page.description || entry.data.description || ''}
+      canonical={page.canonical || `https://slaapkamerinspiratie.nl/${slug}/`}
+      ogImage={page.ogImage || resolvedImage || ''}
+      bodyClass={page.bodyClass || DEFAULT_BODY_CLASS}
+      modifiedTime={page.modifiedTime}
+      publishedTime={page.publishedTime}
+      postCss={page.postCss || ['post-21379.css']}
+    >
+      <Fragment set:html={headerHtml} />
+      <Fragment set:html={pageHtml} />
+      <Fragment set:html={footerHtml} />
+    </ContentPageLayout>
+  ) : Content ? (
+    <BlogPostLayout entry={entry}>
+      <Content />
+    </BlogPostLayout>
+  ) : null
+}

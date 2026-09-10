@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import type { CollectionEntry } from 'astro:content';
+import { getPostImage } from '../lib/blog';
 
 interface Props {
   entry: CollectionEntry<'blog'>;
@@ -10,9 +11,12 @@ interface Props {
 
 const { entry } = Astro.props;
 const { title, description, pubDate, updatedDate, author, categories, tags } = entry.data;
+const image = getPostImage(entry);
+const imageAlt =
+  (entry.data as { featuredImageAlt?: string }).featuredImageAlt || title;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogImage={image}>
   <Header />
   <main class="main-content">
     <article class="blog-post">
@@ -31,6 +35,13 @@ const { title, description, pubDate, updatedDate, author, categories, tags } = e
             ))}
           </ul>
         )}
+        {
+          image && (
+            <figure class="featured-image">
+              <img src={image} alt={imageAlt} width="1200" height="675" loading="eager" decoding="async" />
+            </figure>
+          )
+        }
       </header>
       <div class="post-body">
         <slot />
@@ -74,6 +85,18 @@ const { title, description, pubDate, updatedDate, author, categories, tags } = e
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+  }
+
+  .featured-image {
+    margin: 1.25rem 0 0;
+  }
+
+  .featured-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
   }
 
   .categories,

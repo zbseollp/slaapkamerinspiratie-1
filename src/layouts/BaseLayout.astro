@@ -2,11 +2,21 @@
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, ogImage = '' } = Astro.props;
 const fullTitle =
   title === 'slaapkamerinspiratie.nl' ? title : `${title} | slaapkamerinspiratie.nl`;
+
+function toAbsoluteOg(image: string): string {
+  if (!image) return '';
+  if (/^https?:\/\//i.test(image)) return image;
+  const path = image.startsWith('/') ? image : `/${image}`;
+  return `https://slaapkamerinspiratie.nl${path}`;
+}
+
+const ogAbsolute = toAbsoluteOg(ogImage);
 ---
 
 <!doctype html>
@@ -16,6 +26,8 @@ const fullTitle =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     {description && <meta name="description" content={description} />}
+    {ogAbsolute && <meta property="og:image" content={ogAbsolute} />}
+    {ogAbsolute && <meta name="twitter:card" content="summary_large_image" />}
     <link rel="icon" type="image/png" href="/uploads/2022/12/cropped-Group-18-32x32.png" />
     <title>{fullTitle}</title>
   </head>

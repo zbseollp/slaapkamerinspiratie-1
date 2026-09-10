@@ -61,8 +61,10 @@ export function readField(frontmatter, field) {
   return lines.join(' ').trim().replace(/^["']|["']$/g, '') || null;
 }
 
-export function slugOf(path) {
-  return path.split('/').pop().replace(/\.mdx?$/, '');
+export function slugOf(filePath) {
+  // Windows paths use `\`; never split only on `/` or inject URLs break.
+  const base = filePath.replace(/\\/g, '/').split('/').pop() || filePath;
+  return base.replace(/\.mdx?$/i, '');
 }
 
 export function readPost(path) {
